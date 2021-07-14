@@ -1,11 +1,12 @@
+language: cpp
+compiler: gcc
+
 matrix:
   include:
-    - os: osx
-      osx_image: xcode12.2
-      language: cpp
-      
     - os: windows
-      language: cpp
+
+before_deploy:
+  - if [ "$TRAVIS_OS_NAME" = "windows" ]; then choco install zip ; fi
 
 before_script:
   - mkdir obj
@@ -14,10 +15,21 @@ before_script:
   - cd ../../ && ls
 
 script:
-  - g++ -Wall -fexceptions -O2 -I./src/headers -c ./src/main.cpp -o ./obj/src/main.o
-  - g++ -Wall -fexceptions -O2 -I./src/headers -c ./src/headers/colors.cpp -o ./obj/src/headers/colors.o
-  - g++ -Wall -fexceptions -O2 -I./src/headers -c ./src/headers/config_reader.cpp -o ./obj/src/headers/config_reader.o
+  - g++ -Wall -fexceptions -O2 -I./src/headers -c ./src/main.cpp -o ./obj/src/main.o -m32
+  - g++ -Wall -fexceptions -O2 -I./src/headers -c ./src/headers/colors.cpp -o ./obj/src/headers/colors.o -m32
+  - g++ -Wall -fexceptions -O2 -I./src/headers -c ./src/headers/config_reader.cpp -o ./obj/src/headers/config_reader.o-m32
+  - g++ -o ./bin/Set-DNS-CLI.exe ./obj/src/headers/colors.o ./obj/src/headers/config_reader.o ./obj/src/main.o -s -static -static-libstdc++ -statis-libgcc -m32
+  - ./mt.exe -nologo -manifest ./Set-DNS-CLI.manifest -outputresource:"./bin/Set-DNS-CLI.exe";1
+  - copy ./config.cfg ./bin
+  - zip ./bin/Set-DNS-CLI-win.zip ./bin
 
 branches:
   except:
     - "/^v\\d+\\.\\d+\\.\\d+$/"
+
+deploy:
+  provider: releases
+  api_key: "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"
+  file: "./bin/Set-DNS-CLI-win.zip"
+  skip_cleanup: true
+  draft: true
