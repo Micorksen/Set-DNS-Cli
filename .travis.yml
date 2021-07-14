@@ -4,9 +4,6 @@ matrix:
       osx_image: xcode12.2
       language: cpp
       
-    - os: linux
-      language: cpp
-      
     - os: windows
       language: cpp
 
