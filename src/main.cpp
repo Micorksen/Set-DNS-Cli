@@ -66,7 +66,7 @@ void dhcp(){
     #ifdef _WIN32
     int dhcp = system(("netsh interface ipv4 set dnsservers " + adapter + " dhcp").c_str());
     #elif TARGET_OS_MAC
-    int dhdcp = system(("networksetup -setdhcp \"" + adapter + "\"").c_str());
+    int dhcp = system(("networksetup -setdhcp \"" + adapter + "\"").c_str());
     #endif
 
     if(!dhcp){
