@@ -1,0 +1,17 @@
+matrix:
+  include:
+    - os: osx
+      osx_image: xcode12.2
+      language: cpp
+      
+    - os: linux
+      language: cpp
+
+script:
+  - g++ -Wall -fexceptions -O2 -I%CD%\src\headers -c %CD%\src\main.cpp -o %CD%\obj\src\main.o
+  - g++ -Wall -fexceptions -O2 -I%CD%\src\headers -c %CD%\src\headers\colors.cpp -o obj\src\headers\colors.o
+  - g++ -Wall -fexceptions -O2 -I%CD%\src\headers -c %CD%\src\headers\config_reader.cpp -o obj\src\headers\config_reader.o
+
+branches:
+  except:
+    - "/^v\\d+\\.\\d+\\.\\d+$/"
