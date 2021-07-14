@@ -124,7 +124,7 @@ int main(int argc, char * argv[]){
     SetConsoleMode(GetStdHandle(STD_OUTPUT_HANDLE), consoleMode | 0x0004);
     #elif TARGET_OS_MAC
     string interface = execute("route get one.one.one.one | grep interface");
-    adapter = interface.substr(interface.get(":") + 1);
+    adapter = interface.substr(interface.find(":") + 1);
     #endif
 
     open_config("config.cfg");
