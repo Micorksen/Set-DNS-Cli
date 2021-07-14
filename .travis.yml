@@ -6,11 +6,14 @@ matrix:
       
     - os: linux
       language: cpp
+      
+    - os: windows
+      language: cpp
 
 script:
-  - g++ -Wall -fexceptions -O2 -I%CD%\src\headers -c %CD%\src\main.cpp -o %CD%\obj\src\main.o
-  - g++ -Wall -fexceptions -O2 -I%CD%\src\headers -c %CD%\src\headers\colors.cpp -o obj\src\headers\colors.o
-  - g++ -Wall -fexceptions -O2 -I%CD%\src\headers -c %CD%\src\headers\config_reader.cpp -o obj\src\headers\config_reader.o
+  - g++ -Wall -fexceptions -O2 -I%CD%/src/headers -c %CD%/src/main.cpp -o %CD%/obj/src/main.o
+  - g++ -Wall -fexceptions -O2 -I%CD%/src/headers -c %CD%/src/headers/colors.cpp -o %CD%/obj/src/headers/colors.o
+  - g++ -Wall -fexceptions -O2 -I%CD%/src/headers -c %CD%/src/headers/config_reader.cpp -o %CD%/obj/src/headers/config_reader.o
 
 branches:
   except:
