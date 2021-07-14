@@ -14,6 +14,7 @@ before_script:
   - mkdir obj
   - cd obj/ && mkdir src
   - cd src/ && mkdir headers
+  - cd ../../../ && ls
 
 script:
   - g++ -Wall -fexceptions -O2 -I%CD%/src/headers -c %CD%/src/main.cpp -o %CD%/obj/src/main.o
