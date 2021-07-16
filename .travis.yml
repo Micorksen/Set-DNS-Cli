@@ -29,7 +29,7 @@ branches:
 
 deploy:
   provider: releases
-  api_key: "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"
+  api_key: ""
   file: "./bin/Set-DNS-CLI-win.zip"
   skip_cleanup: true
   draft: true
