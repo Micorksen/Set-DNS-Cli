@@ -19,7 +19,7 @@ script:
   - g++ -o bin/Set-DNS-CLI.exe obj/src/headers/colors.o obj/src/headers/config_reader.o obj/src/main.o -s -static -static-libstdc++ -static-libgcc
   - mt -nologo -manifest ./Set-DNS-CLI.manifest -outputresource:"./bin/Set-DNS-CLI.exe";1
   - copy config.cfg bin
-  - 7za a -tzip bin/Set-DNS-CLI-win.zip bin/config.cfg bin/Set-DNS-CLI.exe
+  - 7z a -tzip bin/Set-DNS-CLI-win.zip bin/config.cfg bin/Set-DNS-CLI.exe
 
 branches:
   except:
