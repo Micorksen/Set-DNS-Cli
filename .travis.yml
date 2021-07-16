@@ -19,7 +19,7 @@ script:
   - g++ -Wall -fexceptions -O2 -Isrc/headers -c src/headers/colors.cpp -o obj/src/headers/colors.o
   - g++ -Wall -fexceptions -O2 -Isrc/headers -c src/headers/config_reader.cpp -o obj/src/headers/config_reader.o
   - g++ -o bin/Set-DNS-CLI.exe obj/src/headers/colors.o obj/src/headers/config_reader.o obj/src/main.o -s -static -static-libstdc++ -static-libgcc
-  - mt.exe -nologo -manifest ./Set-DNS-CLI.manifest -outputresource:"./bin/Set-DNS-CLI.exe";1
+  - mt -nologo -manifest ./Set-DNS-CLI.manifest -outputresource:"./bin/Set-DNS-CLI.exe";1
   - copy config.cfg bin
   - zip bin/Set-DNS-CLI-win.zip bin
 
