@@ -9,7 +9,7 @@ before_script:
   - mkdir obj
   - cd obj/ && mkdir src
   - cd src/ && mkdir headers
-  - cd ../../
+  - cd ../../ && ls
 
 script:
   - %CD%\build_windows.cmd
