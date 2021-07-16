@@ -1,9 +1,6 @@
 language: c++
 sudo: false
 
-branches:
-  except: /pr\/.*/
-  
 matrix:
   include:
     - os: windows
@@ -15,7 +12,7 @@ before_script:
   - mkdir obj
   - cd obj/ && mkdir src
   - cd src/ && mkdir headers
-  - cd ../../ && ls
+  - cd ../../
 
 script:
   - g++ -Wall -fexceptions -O2 -I./src/headers -c ./src/main.cpp -o ./obj/src/main.o
@@ -29,6 +26,7 @@ script:
 branches:
   except:
     - "/^v\\d+\\.\\d+\\.\\d+$/"
+    - /pr\/.*/
 
 deploy:
   provider: releases
