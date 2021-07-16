@@ -6,7 +6,7 @@ matrix:
 
 before_script:
   - choco install 7zip
-  - 7za
+  - 7z
   - mkdir obj
   - cd obj/ && mkdir src
   - cd src/ && mkdir headers
