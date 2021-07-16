@@ -6,20 +6,15 @@ matrix:
 
 before_script:
   - choco install 7zip
-  - 7z
   - mkdir obj
   - cd obj/ && mkdir src
   - cd src/ && mkdir headers
   - cd ../../
 
 script:
-  - g++ -Wall -fexceptions -O2 -Isrc/headers -c src/main.cpp -o obj/src/main.o
-  - g++ -Wall -fexceptions -O2 -Isrc/headers -c src/headers/colors.cpp -o obj/src/headers/colors.o
-  - g++ -Wall -fexceptions -O2 -Isrc/headers -c src/headers/config_reader.cpp -o obj/src/headers/config_reader.o
-  - g++ -o bin/Set-DNS-CLI.exe obj/src/headers/colors.o obj/src/headers/config_reader.o obj/src/main.o -s -static -static-libstdc++ -static-libgcc
-  - mt -nologo -manifest ./Set-DNS-CLI.manifest -outputresource:"./bin/Set-DNS-CLI.exe";1
-  - copy config.cfg bin
-  - 7z a -tzip bin/Set-DNS-CLI-win.zip bin/config.cfg bin/Set-DNS-CLI.exe
+  - build_windows.cmd
+  - cd bin/
+  - 7z a -tzip Set-DNS-CLI-win.zip config.cfg Set-DNS-CLI.exe
 
 branches:
   except:
