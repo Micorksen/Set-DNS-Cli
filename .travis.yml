@@ -12,7 +12,7 @@ before_script:
   - cd ../../
 
 script:
-  - build_windows.cmd
+  - %CD%\build_windows.cmd
   - cd bin/
   - 7z a -tzip Set-DNS-CLI-win.zip config.cfg Set-DNS-CLI.exe
 
