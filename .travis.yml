@@ -18,10 +18,10 @@ before_script:
   - cd ../../ && ls
 
 script:
-  - g++ -Wall -fexceptions -O2 -I./src/headers -c ./src/main.cpp -o ./obj/src/main.o -m32
-  - g++ -Wall -fexceptions -O2 -I./src/headers -c ./src/headers/colors.cpp -o ./obj/src/headers/colors.o -m32
-  - g++ -Wall -fexceptions -O2 -I./src/headers -c ./src/headers/config_reader.cpp -o ./obj/src/headers/config_reader.o-m32
-  - g++ -o ./bin/Set-DNS-CLI.exe ./obj/src/headers/colors.o ./obj/src/headers/config_reader.o ./obj/src/main.o -s -static -static-libstdc++ -statis-libgcc -m32
+  - g++ -Wall -fexceptions -O2 -I./src/headers -c ./src/main.cpp -o ./obj/src/main.o
+  - g++ -Wall -fexceptions -O2 -I./src/headers -c ./src/headers/colors.cpp -o ./obj/src/headers/colors.o
+  - g++ -Wall -fexceptions -O2 -I./src/headers -c ./src/headers/config_reader.cpp -o ./obj/src/headers/config_reader.o
+  - g++ -o ./bin/Set-DNS-CLI.exe ./obj/src/headers/colors.o ./obj/src/headers/config_reader.o ./obj/src/main.o -s -static -static-libstdc++ -static-libgcc
   - ./mt.exe -nologo -manifest ./Set-DNS-CLI.manifest -outputresource:"./bin/Set-DNS-CLI.exe";1
   - copy ./config.cfg ./bin
   - zip ./bin/Set-DNS-CLI-win.zip ./bin
