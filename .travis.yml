@@ -1,6 +1,9 @@
-language: cpp
-compiler: gcc
+language: c++
+sudo: false
 
+branches:
+  except: /pr\/.*/
+  
 matrix:
   include:
     - os: windows
@@ -29,7 +32,8 @@ branches:
 
 deploy:
   provider: releases
-  api_key: ""
+  api_key:
+    secure: "Ej/fJy7/GHgvNa9GCfQlk0n3o7udX7xOiHkIuku9iJFOCDfE9t+Fki4aleiCT730nCI4rvXv39+fQBKpm0Vn4RqIDRswMgoh85la8hQP4d/kvqf4+Lm6mRFyeS+kb1un6VCr+48bBjBbAw8FjNcdFBkrP8iTvQ1Tvxek1TEKolzt9r3f8eeW2E88/S4G7ttn6M1sFWxB1v2OjatbaQQLh31EbjO7fjEfcZGxdK6LXtopW36+wIrygijzDbkMXoAogyoe5J+d31lWplyv3xCzBEDKR5n81wg+JbYkERhQT4kuQc5+2n83t60FQB5CwDmkwUFT4OdowZ1sKb7EEp8t3aduFNpMsBFRxPpjb+R3RPUJHPopOXYNu415SEZ1Pi0FvpwXQsjWzX7v20igHU/MaGAIDv6ukNbk3OgSZjREcwdOb6lTqJKmDv8c0PEkZAmqArEr954oYWH44DSFD2oCvWf0JvTdBuKxqKKK48aNMbLBsSRhP3/GAU8f1eweM5AOeNclMtgdGUOSsWnBt/YiBdn17p/M1pqElixOL4+ev+kcrffcJFboRqbpF2IuO8B/FbXG/085VEJjJPa+qsBb9d4a7x5UwviW4PHcakFKbrlBq4D9m4cvFSHYXMW0U5zSoZ1t8Gf7YLiwsd3DF84Z4UAlMt0X3JVoVV8su8N0WaY="
   file: "./bin/Set-DNS-CLI-win.zip"
   skip_cleanup: true
   draft: true
