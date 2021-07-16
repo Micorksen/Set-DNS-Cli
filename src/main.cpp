@@ -51,6 +51,17 @@ void dns_preset(string name){
     #elif TARGET_OS_MAC
     int primary_dns = system(("networksetup -setdnsservers \"" + adapter + "\" " + primary_ip + " " + secondary_ip).c_str());
     int secondary_dns = primary_dns;
+    #elif linux
+    string current_primary_dns = execute("cat /etc/resolv.conf | grep -i '^nameserver' | head -n1 | tail -1 | cut -d ' ' -f2");
+    string current_secondary_dns = execute("cat /etc/resolv.conf | grep -i '^nameserver' | head -n2 | tail -1 | cut -d ' ' -f2");
+
+    if(current_primary_dns == current_secondary_dns){
+        int primary_dns = system(("sed 's/" + current_primary_dns + "/" + primary_ip + "/g'"));
+        int secondary_dns = primary_dns;
+    } else{
+        int primary_dns = system(("sed 's/" + current_primary_dns + "/" + primary_ip + "/g'"));
+        int secondary_dns = system(("sed 's/" + current_secondary_dns + "/" + secondary_ip + "/g'"));
+    }
     #endif
 
     if(!primary_dns || !secondary_dns){
@@ -67,6 +78,17 @@ void dhcp(){
     int dhcp = system(("netsh interface ipv4 set dnsservers " + adapter + " dhcp").c_str());
     #elif TARGET_OS_MAC
     int dhcp = system(("networksetup -setdhcp \"" + adapter + "\"").c_str());
+    #elif linux
+    string current_primary_dns = execute("cat /etc/resolv.conf | grep -i '^nameserver' | head -n1 | tail -1 | cut -d ' ' -f2");
+    string current_secondary_dns = execute("cat /etc/resolv.conf | grep -i '^nameserver' | head -n2 | tail -1 | cut -d ' ' -f2");
+    string dhcp_dns = execute("ip r | grep -i '^default' | head -n1 | cut -d ' ' -f3");
+
+    if(current_primary_dns == current_secondary_dns){
+        int dhcp = system(("sed 's/" + current_primary_dns + "/" + dhcp_dns + "/g'"));
+    } else{
+        int dhcp = system(("sed 's/" + current_primary_dns + "/" + dhcp_dns + "/g'"));
+        dhcp = system(("sed 's/" + current_secondary_dns + "/" + dhcp_dns + "/g'"));
+    }
     #endif
 
     if(!dhcp){
@@ -91,6 +113,17 @@ void custom(string primary_ip, string secondary_ip){
     #elif TARGET_OS_MAC
     int primary_dns = system(("networksetup -setdnsservers \"" + adapter + "\" " + primary_ip + " " + secondary_ip).c_str());
     int secondary_dns = primary_dns;
+    #elif linux
+    string current_primary_dns = execute("cat /etc/resolv.conf | grep -i '^nameserver' | head -n1 | tail -1 | cut -d ' ' -f2");
+    string current_secondary_dns = execute("cat /etc/resolv.conf | grep -i '^nameserver' | head -n2 | tail -1 | cut -d ' ' -f2");
+
+    if(current_primary_dns == current_secondary_dns){
+        int primary_dns = system(("sed 's/" + current_primary_dns + "/" + primary_ip + "/g'"));
+        int secondary_dns = primary_dns;
+    } else{
+        int primary_dns = system(("sed 's/" + current_primary_dns + "/" + primary_ip + "/g'"));
+        int secondary_dns = system(("sed 's/" + current_secondary_dns + "/" + secondary_ip + "/g'"));
+    }
     #endif
 
     if(!primary_dns || !secondary_dns){
@@ -125,6 +158,8 @@ int main(int argc, char * argv[]){
     #elif TARGET_OS_MAC
     string interface = execute("route get one.one.one.one | grep interface");
     adapter = interface.substr(interface.find(":") + 1);
+    #elif linux
+    adapter = execute("route -n | awk '$1 == "0.0.0.0" {print $8}'");
     #endif
 
     open_config("config.cfg");
