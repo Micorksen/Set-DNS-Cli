@@ -53,11 +53,6 @@ int main(int argc, char * argv[]){
 
     #ifdef _WIN32
     int permission = system("net session > nul 2>&1");
-    if(permission){
-        cout << background("light-red", "Sorry, you need to run the program with administrator privileges ! Exiting the program...") << endl;
-        exit(1);
-    }
-
     char ptr[100];
     strcpy(ptr, execute("powershell -command \"Get-NetIPAddress -AddressFamily IPv4 -InterfaceIndex (Get-NetRoute -DestinationPrefix 0.0.0.0/0 | Sort-Object -Property RouteMetric | Select-Object -ExpandProperty ifIndex) | Select-Object -ExpandProperty IPAddress\"").c_str());
     removeStringTrailingNewLine(ptr);
@@ -72,22 +67,17 @@ int main(int argc, char * argv[]){
     SetConsoleMode(GetStdHandle(STD_OUTPUT_HANDLE), consoleMode | 0x0004);
     #elif TARGET_OS_MAC
     int permission = system("cat /etc/resolv.conf > /dev/null 2>&1");
-    if(permission){
-        cout << background("light-red", "Sorry, you need to run the program with administrator privileges ! Exiting the program...") << endl;
-        exit(1);
-    }
-
     string interface = execute("route get one.one.one.one | grep interface > /dev/null 2>&1");
     adapter = interface.substr(interface.find(":") + 1);
     #elif linux
     int permission = system("cat /etc/resolv.conf > /dev/null 2>&1");
+    adapter = execute("route -n | awk '$1 == "0.0.0.0" {print $8}'");
+    #endif
+
     if(permission){
         cout << background("light-red", "Sorry, you need to run the program with administrator privileges ! Exiting the program...") << endl;
         exit(1);
     }
-
-    adapter = execute("route -n | awk '$1 == "0.0.0.0" {print $8}'");
-    #endif
 
     open_config("config.cfg");
 
