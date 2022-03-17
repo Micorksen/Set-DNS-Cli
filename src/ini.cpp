@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for details.
 // Based from StackOverflow (question #127819).
 
+#include "ini.hpp"
 #include <iostream>
 #include <fstream>
 #include <string>
