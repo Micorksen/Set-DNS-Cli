@@ -8,6 +8,6 @@
 # ******************************************************/
 
 build: src/main.cpp src/ini.cpp src/ini.hpp
-  gcc -o Set-DNS-Cli src/main.cpp src/ini.cpp src/ini.hpp -I. && \
-  chmod +x Set-DNS-Cli && \
-  ./Set-DNS-Cli
+	gcc -o Set-DNS-Cli src/main.cpp src/ini.cpp src/ini.hpp -I. && \
+	chmod +x Set-DNS-Cli && \
+	./Set-DNS-Cli
