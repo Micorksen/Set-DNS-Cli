@@ -7,13 +7,11 @@
 # * 
 # ******************************************************/
 
-build: src/main.cpp src/ini.cpp src/os/windows.cpp src/os/apple.cpp src/os/linux.cpp src/os-functions.h
+build: src/os/windows.cpp src/os/apple.cpp src/os/linux.cpp src/os-functions.h src/main.cpp
 	g++ -o Set-DNS-Cli -s -static -static-libstdc++ -static-libgcc -I. \
-		src/main.cpp \
-		src/ini.cpp \
 		src/os/windows.cpp \
 		src/os/apple.cpp \
 		src/os/linux.cpp \
-		src/os-functions.h && \
+		src/main.cpp && \
 	chmod +x Set-DNS-Cli && \
 	./Set-DNS-Cli
