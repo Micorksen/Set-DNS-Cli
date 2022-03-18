@@ -21,7 +21,18 @@ notifications:
 language: cpp
 script: "make build"
 
-# Configure which branches to run
+# Configure which branches to run.
 branches:
     except: []
 #        - development
+
+# Deploy options.
+deploy:
+    provider: releases
+    skip_cleanup: true
+    api_key: $GH_TOKEN
+    file_glob: true
+    file:
+        - "Set-DNS-Cli"
+    on:
+        tags: true
