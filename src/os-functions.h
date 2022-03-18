@@ -6,7 +6,7 @@
  * https://opensource.org/licenses/MIT.
  ******************************************************/
 
-#ifned OS_FUNCTIONS_H
+#ifndef OS_FUNCTIONS_H
 #define OS_FUNCTIONS_H
 
 void check_permission();
