@@ -1,6 +1,12 @@
-// Copyright (c) Micorksen and contributors. All rights reserved.
-// Licensed under the MIT license. See LICENSE file in the project root for details.
-// Based from StackOverflow (question #127819).
+/******************************************************
+ * Copyright (c) 2022 Micorksen.
+ * 
+ * Use of this source code is governed by an MIT-style
+ * license that can be found in the LICENSE file or at
+ * https://opensource.org/licenses/MIT.
+ * 
+ * Based from StackOverflow (question #127819).
+ ******************************************************/
 
 #include "ini.hpp"
 #include <iostream>
