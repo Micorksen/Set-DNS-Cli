@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <string>
+#include "../os-functions.h"
 
 using namespace std;
 void check_permission(){
