@@ -11,12 +11,12 @@
 
 #ifdef _WIN32
 #include <windows.h>
-#include "windows.cpp"
+#include "os/windows.cpp"
 #elif __APPLE__
 #include <TargetConditionals.h>
-#include "apple.cpp"
+#include "os/apple.cpp"
 #elif linux
-#include "linux.cpp"
+#include "os/linux.cpp"
 #endif
 
 using namespace std;
