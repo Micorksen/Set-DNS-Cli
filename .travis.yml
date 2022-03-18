@@ -23,8 +23,8 @@ script: "make build"
 
 # Configure which branches to run.
 branches:
-    except: []
-#        - development
+    except:
+        - development
 
 # Deploy options.
 deploy:
