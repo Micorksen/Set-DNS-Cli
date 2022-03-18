@@ -17,8 +17,9 @@ notifications:
         on_success: change
         on_failure: always
 
-# Specify language.
+# Specify language and script to run.
 language: cpp
+script: "echo Test successful !"
 
 # Configure which branches to run
 branches:
