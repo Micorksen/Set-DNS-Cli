@@ -8,7 +8,6 @@
 
 #include <iostream>
 #include <string>
-#include "os-functions.h"
 
 #ifdef _WIN32
 #include <windows.h>
