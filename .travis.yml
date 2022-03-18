@@ -19,7 +19,7 @@ notifications:
 
 # Specify language and script to run.
 language: cpp
-script: "echo Test successful !"
+script: "make build"
 
 # Configure which branches to run
 branches:
