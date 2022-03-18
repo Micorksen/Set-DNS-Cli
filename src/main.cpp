@@ -9,11 +9,25 @@
 #include <iostream>
 #include <string>
 
+#ifdef _WIN32
+#include <windows.h>
+#include "windows.cpp"
+#elif __APPLE__
+#include <TargetConditionals.h>
+#include "apple.cpp"
+#elif linux
+#include "linux.cpp"
+#endif
+
 using namespace std;
 int main(int argc, char * argv[]){
     // Version output.
     cout << "Set-DNS-CLI" << endl;
-    cout << "Copyright (c) Micorksen. All righnts reserved." << endl;
-
-    cout << "If you are dumb, please don't read that." << endl;
+    cout << "Copyright (c) Micorksen. All righnts reserved.\n" << endl;
+    
+    // Run OS functions.
+    check_permission();
+    get_adapter();
+    
+    return 0;
 }
