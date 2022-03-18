@@ -6,6 +6,9 @@
  * https://opensource.org/licenses/MIT.
  ******************************************************/
 
+#include <iostream>
+#include <string>
+
 using namespace std;
 void check_permission(){
 	cout << "Checked permissions." << endl;
