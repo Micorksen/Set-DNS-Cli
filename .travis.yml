@@ -1,0 +1,26 @@
+# /*****************************************************
+# * Copyright (c) 2022 Micorksen.
+# * 
+# * Use of this source code is governed by an MIT-style
+# * license that can be found in the LICENSE file or at
+# * https://opensource.org/licenses/MIT.
+# * 
+# ******************************************************/
+
+# Notifications options.
+notifications:
+    email:
+        recipients:
+            - hello@micorksen.xyz
+            
+        # Change is when the repository status goes from pass to fail or vice versa.
+        on_success: change
+        on_failure: always
+
+# Specify language.
+language: cpp
+
+# Configure which branches to run
+branches:
+    except: []
+#        - development
