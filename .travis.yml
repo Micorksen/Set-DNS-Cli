@@ -21,18 +21,26 @@ script:
 
 # Configure which branches to run.
 branches:
-    except: []
+    except:
+        - /^*-v[0-9]/
 #        - development
+
+# Before deploy script.
+before_deploy:
+    - git config --global user.email "builds@travis-ci.com"
+    - git config --global user.name "Travis CI"
+    - git tag $TRAVIS_BRANCH-0.1.$TRAVIS_BUILD_NUMBER -a -m "Generated tag from Travis CI for build $TRAVIS_BUILD_NUMBER."
+    - git push -q https://$TAGPERM@github.com/Micorksen/Set-DNS-Cli --tags
 
 # Deploy options.
 deploy:
     provider: releases
     cleanup: false
     token: $GH_TOKEN
-    file_glob: true
     file:
-        - Set-DNS-Cli.apple.sh
-        - Set-DNS-Cli.linux.sh
-        - Set-DNS-Cli.exe
+        - "Set-DNS-Cli.apple.sh"
+        - "Set-DNS-Cli.linux.sh"
+        - "Set-DNS-Cli.exe"
     on:
-        tags: true
+        tags: false
+        all_branches: true
