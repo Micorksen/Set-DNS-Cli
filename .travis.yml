@@ -27,7 +27,7 @@ os:
 language: cpp
 before_install:
     - sudo apt-get -y install \
-        build-essentials \
+        build-essential \
         make
     
 script: "make $TRAVIS_OS_NAME"
