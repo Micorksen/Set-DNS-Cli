@@ -7,28 +7,30 @@
 # * 
 # ******************************************************/
 
-.PHONY: build-apple build-linux build-windows
+.PHONY: apple linux windows test
 
 PROGRAM=Set-DNS-Cli
 CC=g++
 CPPFLAGS=-s -static -static-libstdc++ -static-libgcc -I.
 
 apple: src/os/apple.cpp src/main.cpp
-	$(CC) $(CPPFLAGS) -o $(PROGRAM) \
-		src/os/apple.cpp
+	$(CC) $(CPPFLAGS) -o $(PROGRAM).apple.sh \
+		src/os/apple.cpp \
 		src/main.cpp && \
-	chmod +x Set-DNS-Cli && \
-	./Set-DNS-Cli
+	chmod +x $(PROGRAM).apple.sh
 	
 linux: src/os/linux.cpp src/main.cpp
-	$(CC) $(CPPFLAGS) -o $(PROGRAM) \
+	$(CC) $(CPPFLAGS) -o $(PROGRAM).linux.sh \
 		src/os/linux.cpp \
 		src/main.cpp && \
-	chmod +x Set-DNS-Cli && \
-	./Set-DNS-Cli
+	chmod +x $(PROGRAM).linux.sh
 	
 windows: src/os/windows.cpp src/main.cpp
 	$(CC) $(CPPFLAGS) -o $(PROGRAM).exe \
 		src/os/windows.cpp \
-		src/main.cpp && \
-	./Set-DNS-Cli.exe
+		src/main.cpp
+
+test: $(PROGRAM).apple.sh $(PROGRAM).linux.sh $(PROGRAM).exe
+	$(PROGRAM).apple.sh > /dev/null 2>&1
+	$(PROGRAM).linux.sh > /dev/null 2>&1
+	$(PROGRAM).exe > /dev/null 2>&1
