@@ -13,21 +13,21 @@ PROGRAM=Set-DNS-Cli
 CC=g++
 CPPFLAGS=-s -static -static-libstdc++ -static-libgcc -I.
 
-build-apple: src/os/apple.cpp src/main.cpp
+osx: src/os/apple.cpp src/main.cpp
 	$(CC) $(CPPFLAGS) -o $(PROGRAM) \
 		src/os/apple.cpp
 		src/main.cpp && \
 	chmod +x Set-DNS-Cli && \
 	./Set-DNS-Cli
 	
-build-linux: src/os/linux.cpp src/main.cpp
+linux: src/os/linux.cpp src/main.cpp
 	$(CC) $(CPPFLAGS) -o $(PROGRAM) \
 		src/os/linux.cpp \
 		src/main.cpp && \
 	chmod +x Set-DNS-Cli && \
 	./Set-DNS-Cli
 	
-build-windows: src/os/windows.cpp src/main.cpp
+windows: src/os/windows.cpp src/main.cpp
 	$(CC) $(CPPFLAGS) -o $(PROGRAM).exe \
 		src/os/windows.cpp \
 		src/main.cpp && \
