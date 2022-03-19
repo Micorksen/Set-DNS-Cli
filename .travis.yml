@@ -7,21 +7,8 @@
 # * 
 # ******************************************************/
 
-# Notifications options.
-notifications:
-    email:
-        recipients:
-            - hello@micorksen.xyz
-            
-        # Change is when the repository status goes from pass to fail or vice versa.
-        on_success: change
-        on_failure: always
-
 # OS for building.
-os:
-    - osx
-    - linux
-    - windows
+os: linux
 
 # Specify language and script to run.
 language: cpp
