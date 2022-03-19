@@ -31,6 +31,6 @@ windows: src/os/windows.cpp src/main.cpp
 		src/main.cpp
 
 test: $(PROGRAM).apple.sh $(PROGRAM).linux.sh $(PROGRAM).exe
-	$(PROGRAM).apple.sh > /dev/null 2>&1
-	$(PROGRAM).linux.sh > /dev/null 2>&1
-	$(PROGRAM).exe > /dev/null 2>&1
+	./$(PROGRAM).apple.sh > /dev/null 2>&1
+	./$(PROGRAM).linux.sh > /dev/null 2>&1
+	./$(PROGRAM).exe > /dev/null 2>&1
