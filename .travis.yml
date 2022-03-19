@@ -17,19 +17,18 @@ notifications:
         on_success: change
         on_failure: always
 
-# OS to build.
+# OS for building.
 os:
     - osx
     - linux
     - windows
 
-# Specify language, compiler and script to run.
+# Specify language and script to run.
 language: cpp
-before_install:
-    - sudo apt update -y
-    - sudo apt -y install build-essential make
-    
-script: "make $TRAVIS_OS_NAME"
+script:
+    - make apple
+    - make linux
+    - make windows
 
 # Configure which branches to run.
 branches:
