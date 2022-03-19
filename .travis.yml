@@ -9,6 +9,7 @@
 
 # OS for building.
 os: linux
+dist: xenial
 
 # Specify language and script to run.
 language: cpp
@@ -26,10 +27,12 @@ branches:
 # Deploy options.
 deploy:
     provider: releases
-    skip_cleanup: true
-    api_key: $GH_TOKEN
+    cleanup: false
+    token: $GH_TOKEN
     file_glob: true
     file:
-        - "Set-DNS-Cli"
+        - Set-DNS-Cli.apple.sh
+        - Set-DNS-Cli.linux.sh
+        - Set-DNS-Cli.exe
     on:
         tags: true
