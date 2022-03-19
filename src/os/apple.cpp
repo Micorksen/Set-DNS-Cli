@@ -5,3 +5,16 @@
  * license that can be found in the LICENSE file or at
  * https://opensource.org/licenses/MIT.
  ******************************************************/
+
+#include <iostream>
+#include <string>
+#include "../os-functions.h"
+
+using namespace std;
+void check_permission(){
+	cout << "Impasta you." << endl;
+};
+
+void get_adapter(){
+	cout << "Adapter is : Begula." << endl;
+};
