@@ -8,9 +8,9 @@
 
 #include <iostream>
 #include <string>
-#include "os-functions.h"
+//#include "os-functions.h"
 
-/** #ifdef _WIN32
+#ifdef _WIN32
 #include <windows.h>
 #include "os/windows.cpp"
 #elif __APPLE__
@@ -18,7 +18,7 @@
 #include "os/apple.cpp"
 #elif linux
 #include "os/linux.cpp"
-#endif **/
+#endif
 
 using namespace std;
 int main(int argc, char * argv[]){
