@@ -26,14 +26,12 @@ os:
 # Specify language, compiler and script to run.
 language: cpp
 before_install:
-    - sudo apt-get -y install \
+    - sudo apt update -y
+    - sudo apt -y install \
         build-essential \
         make
     
 script: "make $TRAVIS_OS_NAME"
-addons:
-    apt:
-        update: true
 
 # Configure which branches to run.
 branches:
