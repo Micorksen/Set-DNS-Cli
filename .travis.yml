@@ -25,7 +25,7 @@ os:
 
 # Specify language and script to run.
 language: cpp
-script: "make build-$(TRAVIS_OS_NAME)"
+script: "make build-$TRAVIS_OS_NAME"
 
 # Configure which branches to run.
 branches:
