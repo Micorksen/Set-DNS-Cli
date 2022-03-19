@@ -17,9 +17,15 @@ notifications:
         on_success: change
         on_failure: always
 
+# OS to build.
+os:
+    - osx
+    - linux
+    - windows
+
 # Specify language and script to run.
 language: cpp
-script: "make build"
+script: "make build-$(TRAVIS_OS_NAME)"
 
 # Configure which branches to run.
 branches:
