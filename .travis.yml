@@ -16,6 +16,7 @@ script:
     - make apple
     - make linux
     - make windows
+    - make test
 
 # Configure which branches to run.
 branches:
