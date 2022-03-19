@@ -13,7 +13,7 @@ PROGRAM=Set-DNS-Cli
 CC=g++
 CPPFLAGS=-s -static -static-libstdc++ -static-libgcc -I.
 
-osx: src/os/apple.cpp src/main.cpp
+apple: src/os/apple.cpp src/main.cpp
 	$(CC) $(CPPFLAGS) -o $(PROGRAM) \
 		src/os/apple.cpp
 		src/main.cpp && \
