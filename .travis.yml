@@ -23,8 +23,9 @@ os:
     - linux
     - windows
 
-# Specify language and script to run.
+# Specify language, compiler and script to run.
 language: cpp
+compiler: gcc
 script:
   - if [ "$TRAVIS_OS_NAME" = "osx" ]; then "make build-apple"; fi
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then "make build-linux"; fi
