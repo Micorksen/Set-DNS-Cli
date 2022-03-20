@@ -23,7 +23,7 @@ script:
 branches:
     except:
         - /^*-v[0-9]/
-#        - development
+        - development
 
 # Deploy options.
 deploy:
