@@ -20,6 +20,22 @@
 #include "os/linux.cpp"
 #endif*/
 
+// Return result of command and remove trailing new lines.
+string execute(string command){
+    char buffer[128];
+    string result = "";
+    
+    FILE* pipe = popen(command.c_str(), "r");
+    if(!pipe) throw system_error("Cannot execute the command !");
+    
+    while(fgets(buffer, sizeof buffer, pipe) != NULL){ result += buffer; }
+    pclose(pipe);
+    
+    int commandLength = strlen(command);
+    if(command[commandLength - 1] == "\n") command[commandLength - 1] = "\0";
+    return command;
+}
+
 using namespace std;
 int main(int argc, char * argv[]){
     // Version output.
