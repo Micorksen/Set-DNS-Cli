@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <string>
+#include <cstring>
 #include "os-functions.h"
 using namespace std;
 
