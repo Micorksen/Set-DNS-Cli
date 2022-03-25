@@ -9,16 +9,7 @@
 #include <iostream>
 #include <string>
 #include "os-functions.h"
-
-/*#ifdef _WIN32
-#include <windows.h>
-#include "os/windows.cpp"
-#elif __APPLE__
-#include <TargetConditionals.h>
-#include "os/apple.cpp"
-#elif linux
-#include "os/linux.cpp"
-#endif*/
+using namespace std;
 
 // Return result of command and remove trailing new lines.
 string execute(string command){
@@ -36,7 +27,7 @@ string execute(string command){
     return command;
 }
 
-using namespace std;
+// Execute main function.
 int main(int argc, char * argv[]){
     // Version output.
     cout << "Set-DNS-CLI" << endl;
