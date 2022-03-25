@@ -15,6 +15,13 @@ void check_permission(){
 	cout << "Fuck you." << endl;
 };
 
-void get_adapter(){
-	cout << "Adapter is : Ethernet." << endl;
+string get_adapter(){
+	char command[100];
+	strcpy(command, execute("powershell -command \"Get-NetIPAddress -AddressFamily IPv4 -InterfaceIndex (Get-NetRoute -DestinationPrefix 0.0.0.0/0 | Sort-Object -Property RouteMetric | Select-Object -ExpandProperty ifIndex) | Select-Object -ExpandProperty IPAddress\"").c_str());
+	string local_ip = string{command};
+	
+	strcpy(command, execute("powershell -command \"foreach($int in (gwmi Win32_NetworkAdapter)) {gwmi Win32_NetworkAdapterConfiguration -Filter \"\"\"Index = $($int.index)\"\"\" | ? {$_.IPAddress -contains '" + local_ip + "'} | % {$int.NetConnectionID} }\"").c_str());
+	cout << "Adapter is : " << string(command) << endl;
+	
+	return string(command);
 };
