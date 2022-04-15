@@ -12,7 +12,7 @@
 
 using namespace std;
 void check_permission(){
-	cout << "Fuck you." << endl;
+	
 };
 
 string get_adapter(){
@@ -21,7 +21,5 @@ string get_adapter(){
 	string local_ip = string{command};
 	
 	strcpy(command, execute("powershell -command \"foreach($int in (gwmi Win32_NetworkAdapter)) {gwmi Win32_NetworkAdapterConfiguration -Filter \"\"\"Index = $($int.index)\"\"\" | ? {$_.IPAddress -contains '" + local_ip + "'} | % {$int.NetConnectionID} }\"").c_str());
-	cout << "Adapter is : " << string(command) << endl;
-	
 	return string(command);
 };
