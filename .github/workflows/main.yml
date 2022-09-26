@@ -6,11 +6,18 @@ on:
     branches: [ "main" ]
     
 jobs:
-  linux:
-    runs-on: ubuntu-latest
+  artifact:
+    runs-on: [macos-latest, ubuntu-latest, windows-latest]
     steps:
-      - name: Compiling the project
+      - name: Cloning the project (on ${{ matrix.os }})
         uses: actions/checkout@v3.0.2
-      - run: |
-          ls
-          g++ src/main.cpp src/os/linux.cpp src/vendor/INIReader/* src/vendor/http/* -lssl -lcrypto -static -o Set-DNS-Cli
+      - name: Compiling the project (on macOS)
+        if: runner.os == 'macOS'
+        run: "g++ src/main.cpp src/os/macos.cpp src/vendor/INIReader/* src/vendor/http/* -lssl -lcrypto -static -o Set-DNS-Cli-x64-macos"
+      - name: Compiling the project (on Linux)
+        if: runner.os == 'Linux'
+        run: "g++ src/main.cpp src/os/linux.cpp src/vendor/INIReader/* src/vendor/http/* -lssl -lcrypto -static -o Set-DNS-Cli-x64-linux"
+      - name: Compiling the project (on Windows)
+        if: runner.os == 'Windows'
+        run: "g++ src/main.cpp src/os/windows.cpp src/vendor/INIReader/* src/vendor/http/* -lssl -lcrypto -static -o Set-DNS-Cli-x64.exe"
+      
