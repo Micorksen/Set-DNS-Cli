@@ -28,7 +28,7 @@ jobs:
       - name: Downloading the dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libssl-dev=3.0.2-0ubuntu1.6  
+          sudo apt-get install -y libssl-dev
       - name: Cloning the project
         uses: actions/checkout@v3.0.2
       - name: Compiling the project
