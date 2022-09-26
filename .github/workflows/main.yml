@@ -13,6 +13,14 @@ jobs:
         uses: actions/checkout@v3.0.2
       - name: Compiling the project
         run: "g++ src/main.cpp src/os/macos.cpp src/vendor/INIReader/* src/vendor/http/* -lssl -lcrypto -static -o Set-DNS-Cli-x64-macos"
+      - name: Create the artifact URL
+        uses: actions/download-artifact@v3
+        with:
+          name: "Set-DNS-Cli-x64-macos"
+          path: .
+      - name: Get the artifact URL
+        run: echo ${{ steps.download.outputs.download-path }}
+        
         
   artifact-ubuntu:
     runs-on: ubuntu-latest
@@ -21,7 +29,14 @@ jobs:
         uses: actions/checkout@v3.0.2
       - name: Compiling the project
         run: "g++ src/main.cpp src/os/linux.cpp src/vendor/INIReader/* src/vendor/http/* -lssl -lcrypto -static -o Set-DNS-Cli-x64-linux"
-        
+      - name: Create the artifact URL
+        uses: actions/download-artifact@v3
+        with:
+          name: "Set-DNS-Cli-x64-linux"
+          path: .
+      - name: Get the artifact URL
+        run: echo ${{ steps.download.outputs.download-path }}
+      
   artifact-windows:
     runs-on: windows-latest
     steps:
@@ -29,3 +44,10 @@ jobs:
         uses: actions/checkout@v3.0.2
       - name: Compiling the project
         run: "g++ src/main.cpp src/os/windows.cpp src/vendor/INIReader/* src/vendor/http/* -lssl -lcrypto -static -o Set-DNS-Cli-x64.exe"
+      - name: Create the artifact URL
+        uses: actions/download-artifact@v3
+        with:
+          name: "Set-DNS-Cli-x64.exe"
+          path: .
+      - name: Get the artifact URL
+        run: echo ${{ steps.download.outputs.download-path }}
