@@ -7,14 +7,34 @@
  ******************************************************/
 
 #include <iostream>
-#include <string>
 #include "../os-functions.h"
 
-using namespace std;
-void check_permission(){
-	cout << "Checked permissions." << endl;
-};
+int isAdministrator() {
+	return OS::execute("id -u") == "0";
+}
 
-void get_adapter(){
-	cout << "Adapter is : eth0." << endl;
-};
+std::string getAdapter() {
+    return OS::execute("ip r | awk '$1 == \"default\" {print $5}'");
+}
+
+int setCustomDNS(std::string primary_ip, std::string secondary_ip) {
+    std::string current_primary = OS::execute("cat /etc/resolv.conf | grep -i '^nameserver' | head -n1 | tail -1 | cut -d ' ' -f2");
+    std::string current_secondary = OS::execute("cat /etc/resolv.conf | grep -i '^nameserver' | head -n2 | tail -1 | cut -d ' ' -f2");
+
+    int primary_ip_setted = !system(("sed -i 's/" + current_primary + "/" + primary_ip + "/g' /etc/resolv.conf").c_str());
+    int secondary_ip_setted = -1;
+    if (secondary_ip != "") {
+        secondary_ip_setted = !system(("sed -i 's/" + current_secondary + "/" + secondary_ip + "/g' /etc/resolv.conf").c_str());
+    }
+
+    if (!primary_ip_setted || secondary_ip_setted == 0) {
+        return 0;
+    }
+
+    return 1;
+}
+
+int useDHCP() {
+    // Not supported on Linux, return a 0.
+    return 0;
+}
