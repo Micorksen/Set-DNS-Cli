@@ -9,8 +9,8 @@ jobs:
   linux:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.0.2
       - name: Compiling the project
+        uses: actions/checkout@v3.0.2
       - run: |
           ls
           g++ src/main.cpp src/os/linux.cpp src/vendor/INIReader/* src/vendor/http/* -lssl -lcrypto -static -o Set-DNS-Cli
