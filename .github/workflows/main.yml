@@ -12,23 +12,25 @@ jobs:
       - name: Cloning the project
         uses: actions/checkout@v3.0.2
       - name: Compiling the project
-        run: "g++ src/main.cpp src/os/macos.cpp src/vendor/INIReader/* src/vendor/http/* -lssl -lcrypto -static -o Set-DNS-Cli-x64-macos"
-      - name: Create the artifact URL
-        uses: actions/download-artifact@v3
+        run: "/usr/local/bin/g++ src/main.cpp src/os/macos.cpp src/vendor/INIReader/* src/vendor/http/* -lssl -lcrypto -static -o Set-DNS-Cli-x64-macos"
+      - name: Sending the artifact via e-mail
+        uses: dawidd6/action-send-mail@v3
         with:
-          name: "Set-DNS-Cli-x64-macos"
-          path: .
-      - name: Get the artifact URL
-        run: echo ${{ steps.download.outputs.download-path }}
+          server_address: pelops.o2switch.net
+          server_port: 465
+          secure: true
+          username: no-reply@micorksen.eu
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: "[Micorksen/Set-DNS-Cli] Run succeeded : macos"
+          body: "Check the attachment to publish the release 😁"
+          to: hello@micorksen.eu
+          from: Matteo C.
+          attachments: Set-DNS-Cli-x64-macos
         
         
   artifact-ubuntu:
     runs-on: ubuntu-22.04
     steps:
-      - name: Downloading the dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libssl-dev
       - name: Cloning the project
         uses: actions/checkout@v3.0.2
       - name: Compiling the project
@@ -41,9 +43,10 @@ jobs:
           secure: true
           username: no-reply@micorksen.eu
           password: ${{ secrets.MAIL_PASSWORD }}
-          subject: Job Result - Set-DNS-Cli/ubuntu
+          subject: "[Micorksen/Set-DNS-Cli] Run succeeded : ubuntu"
+          body: "Check the attachment to publish the release 😁"
           to: hello@micorksen.eu
-          from: GitHub Workflows
+          from: Matteo C.
           attachments: Set-DNS-Cli-x64-linux
       
   artifact-windows:
@@ -60,3 +63,16 @@ jobs:
           path: .
       - name: Get the artifact URL
         run: echo ${{ steps.download.outputs.download-path }}
+      - name: Sending the artifact via e-mail
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: pelops.o2switch.net
+          server_port: 465
+          secure: true
+          username: no-reply@micorksen.eu
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: "[Micorksen/Set-DNS-Cli] Run succeeded : windows"
+          body: "Check the attachment to publish the release 😁"
+          to: hello@micorksen.eu
+          from: Matteo C.
+          attachments: Set-DNS-Cli-x64.exe
