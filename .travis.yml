@@ -1,1 +1,39 @@
+# /*****************************************************
+# * Copyright (c) 2022 Micorksen.
+# * 
+# * Use of this source code is governed by an MIT-style
+# * license that can be found in the LICENSE file or at
+# * https://opensource.org/licenses/MIT.
+# * 
+# ******************************************************/
+
+# OS for building.
+os: linux
+dist: xenial
+
+# Specify language and script to run.
 language: cpp
+script:
+    - make apple
+    - make linux
+    - make windows
+    - make test
+
+# Configure which branches to run.
+branches:
+    except:
+        - /^*-v[0-9]/
+        - development
+
+# Deploy options.
+deploy:
+    provider: releases
+    cleanup: false
+    token: $GH_TOKEN
+    file:
+        - "Set-DNS-Cli.apple.sh"
+        - "Set-DNS-Cli.linux.sh"
+        - "Set-DNS-Cli.exe"
+    on:
+        tags: false
+        all_branches: true

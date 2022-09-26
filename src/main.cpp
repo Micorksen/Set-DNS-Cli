@@ -1,92 +1,139 @@
+/******************************************************
+ * Copyright (c) 2022 Micorksen.
+ * 
+ * Use of this source code is governed by an MIT-style
+ * license that can be found in the LICENSE file or at
+ * https://opensource.org/licenses/MIT.
+ ******************************************************/
+
+#define CPPHTTPLIB_OPENSSL_SUPPORT
 #include <iostream>
-#include "config_reader.h"
-#include "colors.h"
-#include <string>
+#include "vendor/INIReader/INIReader.h"
+#include "vendor/http/httplib.h"
+#include "vendor/rapidjson/document.h"
+#include "os-functions.h"
 
-#ifdef _WIN32
-#include <windows.h>
-#include "windows.cpp"
-#elif __APPLE__
-#include <TargetConditionals.h>
-#include "macos.cpp"
-#elif linux
-#include "linux.cpp"
-#endif
+void help() {
+    std::cout << "Syntax : [custom|dns-preset|dhcp]"
+              << std::endl;
 
-using namespace std;
-string adapter;
+    std::cout << "Examples : "
+              << std::endl;
 
-string execute(string command){
-    char buffer[128];
-    string result = "";
+    std::cout << "- custom 8.8.8.8 8.8.4.4"
+              << std::endl;
 
-    FILE* pipe = popen(command.c_str(), "r");
-    if(!pipe){
-        cerr << background("red", "Cannot execute the command ! Exiting the program...") << endl;
-        exit(1);
-    }
-
-    while(fgets(buffer, sizeof buffer, pipe) != NULL){ result += buffer; }
-    pclose(pipe);
-
-    return result;
-};
-
-void help(){
-    cout << "\n" << "Syntax : [dns-preset|dhcp|custom]" << endl;
-    cout << "Examples : " << endl;
-    cout << "- dns-preset cloudflare" << endl;
-    cout << "- custom 8.8.8.8 8.8.4.4" << endl;
-};
-
-void removeStringTrailingNewLine(char *str){
-    if(str == NULL) return;
-    int length = strlen(str);
-    if(str[length - 1] == '\n') str[length - 1] = '\0';
+    std::cout << "- dns-preset cloudflare"
+              << std::endl;
 }
 
-int main(int argc, char * argv[]){
-    bool is_beta = (get_property("beta") == "true" ? true : false);
-    cout << "Set-DNS-CLI [version " << get_property("version") << (is_beta ? "-BETA" : "") << "]" << endl;
-    cout << "(c) Matteo C. Licensed with MIT license.\n" << endl;
-    if(is_beta) cout << background("yellow", "You are running in beta version. If you find a bug / problem, open an issue on GitHub.") << endl;
+int main(int argc, char * argv[]) {
+    INIReader config = OS::readConfig();
+    std::string version = "1.1";
+    std::string vendor = config.GetString("Updater", "Vendor", "");
+    std::string owner = config.GetString("Updater", "Owner", "Micorksen");
+    std::string repository = config.GetString("Updater", "Repository", "Set-DNS-CLI");
 
-    #ifdef _WIN32
-    int permission = system("net session > nul 2>&1");
-    char ptr[100];
-    strcpy(ptr, execute("powershell -command \"Get-NetIPAddress -AddressFamily IPv4 -InterfaceIndex (Get-NetRoute -DestinationPrefix 0.0.0.0/0 | Sort-Object -Property RouteMetric | Select-Object -ExpandProperty ifIndex) | Select-Object -ExpandProperty IPAddress\"").c_str());
-    removeStringTrailingNewLine(ptr);
-    string local_ip = string{ptr};
+    std::cout << "Set-DNS-Cli [version "
+              << version << "]"
+              << std::endl;
 
-    strcpy(ptr, execute("powershell -command \"foreach($int in (gwmi Win32_NetworkAdapter)) {gwmi Win32_NetworkAdapterConfiguration -Filter \"\"\"Index = $($int.index)\"\"\" | ? {$_.IPAddress -contains '" + local_ip + "'} | % {$int.NetConnectionID} }\"").c_str());
-    removeStringTrailingNewLine(ptr);
-    adapter = string(ptr);
+    std::cout << "(c) " << (vendor != "" ? vendor + " (original version by Micorksen)" : "Micorksen") << ". All rights reserved."
+              << std::endl
+              << "\n";
 
-    DWORD consoleMode;
-    GetConsoleMode(GetStdHandle(STD_OUTPUT_HANDLE), &consoleMode);
-    SetConsoleMode(GetStdHandle(STD_OUTPUT_HANDLE), consoleMode | 0x0004);
-    #elif TARGET_OS_MAC
-    int permission = system("cat /etc/resolv.conf > /dev/null 2>&1");
-    string interface = execute("route get one.one.one.one | grep interface > /dev/null 2>&1");
-    adapter = interface.substr(interface.find(":") + 1);
-    #elif linux
-    int permission = system("cat /etc/resolv.conf > /dev/null 2>&1");
-    adapter = execute("route -n | awk '$1 == "0.0.0.0" {print $8}'");
-    #endif
+    if (config.GetBoolean("Updater", "CheckUpdates", true)) {
+        httplib::Client ghAPI("https://api.github.com");
+        httplib::Result response = ghAPI.Get(
+                "/repos/"
+                + owner + "/" + repository
+                + "/releases"
+        );
 
-    if(permission){
-        cout << background("light-red", "Sorry, you need to run the program with administrator privileges ! Exiting the program...") << endl;
-        exit(1);
+        if (response->status != 200) {
+            std::cerr << "Cannot fetch the releases..."
+                      << "\n"
+                      << std::endl;
+        } else {
+            rapidjson::Document releases;
+            releases.Parse(response->body.c_str());
+
+            std::string ghLatestVersion = ((std::string) releases[0]["tag_name"].GetString()).replace(0, 1, "");
+            if (std::stod(ghLatestVersion) > std::stod(version)) {
+                std::cout << "A newer version is available."
+                          << "\nYou can download it at https://github.com/"
+                          << owner + "/" + repository
+                          << "/releases/tag/v" << ghLatestVersion
+                          << "\n"
+                          << std::endl;
+            }
+        }
     }
 
-    open_config("config.cfg");
+    if (!isAdministrator()) {
+        std::cout << "You need administrator privileges to run this program."
+                  << std::endl;
 
-    if(argc >= 2){
-        if(string(argv[1]) == "dns-preset") dns_preset(adapter, (argv[2] ?: ""));
-        else if(string(argv[1]) == "dhcp") dhcp(adapter);
-        else if(string(argv[1]) == "custom") custom(adapter, (argv[2] ?: ""), (argv[3] ?: ""));
-        else help();
-    } else help();
+        return 1;
+    }
+
+    if (argc >= 2) {
+        std::string command(argv[1]);
+        if (command == "custom") {
+            if (!argv[1]) {
+                std::cout << "Syntax : custom [primary] (secondary)"
+                          << std::endl;
+
+                return 0;
+            }
+
+            if (argv[2]) {
+                int result = setCustomDNS(std::string(argv[1]), std::string(argv[2]));
+                if (!result) {
+                    std::cerr << "An error has occurred when running this command."
+                              << std::endl;
+
+                    return 1;
+                }
+            }
+
+            int result = setCustomDNS(std::string(argv[1]));
+            if (!result) {
+                std::cerr << "An error has occurred when running this command."
+                          << std::endl;
+
+                return 1;
+            }
+        } else if (command == "dns-preset") {
+            if (!argv[1]) {
+                std::cout << "Syntax : dns-preset [name]"
+                          << std::endl;
+
+                return 0;
+            }
+
+            int result = OS::setDNSPreset(argv[1]);
+            if (!result) {
+                std::cerr << "An error has occurred when running this command."
+                          << std::endl;
+
+                return 1;
+            }
+        } else if (command == "dhcp") {
+            int result = useDHCP();
+            if (!result) {
+                std::cerr << "An error has occurred when running this command."
+                          << std::endl;
+
+                return 1;
+            }
+        } else {
+            help();
+            return 0;
+        }
+    } else {
+        help();
+    }
 
     return 0;
 }
