@@ -20,11 +20,11 @@ std::string getAdapter() {
 
 int setCustomDNS(std::string primary_ip, std::string secondary_ip) {
     std::string adapter = getAdapter();
-    int primary_ip_setted = !system("netsh interface ipv4 add dnsservers " + adapter + " " + primary_ip + " index=1 > nul 2>&1");
+    int primary_ip_setted = !system(("netsh interface ipv4 add dnsservers " + adapter + " " + primary_ip + " index=1 > nul 2>&1").c_str());
     int secondary_ip_setted = -1;
 
     if (secondary_ip != "") {
-        int secondary_ip_setted = !system("netsh interface ipv4 add dnsservers " + adapter + " " + secondary_ip + " index=2 > nul 2>&1");
+        secondary_ip_setted = !system(("netsh interface ipv4 add dnsservers " + adapter + " " + secondary_ip + " index=2 > nul 2>&1").c_str());
     }
 
     if (!primary_ip_setted || secondary_ip_setted == 0) {
@@ -35,5 +35,5 @@ int setCustomDNS(std::string primary_ip, std::string secondary_ip) {
 }
 
 int useDHCP() {
-    return !system("netsh interface ipv4 set dnsserver " + getAdapter() + " dhcp > nul 2>&1");
+    return !system(("netsh interface ipv4 set dnsserver " + getAdapter() + " dhcp > nul 2>&1").c_str());
 }
