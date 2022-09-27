@@ -14,10 +14,7 @@ jobs:
       - name: Clone the project
         uses: actions/checkout@v3.0.2
       - name: Compile the project
-        run: |
-          export LDFLAGS="-L/usr/local/opt/openssl@3/lib"
-          export CPPFLAGS="-I/usr/local/opt/openssl@3/include
-          g++ src/main.cpp src/os/macos.cpp -lssl -lcrypto -static -o Set-DNS-Cli-x64-macos
+        run: "g++ -L/usr/local/opt/openssl@3/lib -I/usr/local/opt/openssl@3/includE src/main.cpp src/os/macos.cpp -lssl -lcrypto -static -o Set-DNS-Cli-x64-macos"
       - name: Send the artifact via e-mail
         uses: dawidd6/action-send-mail@v3
         with:
