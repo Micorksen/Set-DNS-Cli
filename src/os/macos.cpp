@@ -20,11 +20,11 @@ std::string getAdapter() {
 
 int setCustomDNS(std::string primary_ip, std::string secondary_ip) {
     std::string adapter = getAdapter();
-    int primary_ip_setted = !system("networksetup -setdnsservers " + adapter + " " + primary_ip);
+    int primary_ip_setted = !system(("networksetup -setdnsservers " + adapter + " " + primary_ip).c_str());
     int secondary_ip_setted = -1;
 
     if (secondary_ip != "") {
-        int secondary_ip_setted = !system("networksetup -setdnsservers " + adapter + " " + primary_ip + " " + secondary_ip);
+        secondary_ip_setted = !system(("networksetup -setdnsservers " + adapter + " " + primary_ip + " " + secondary_ip).c_str());
     }
 
     if (!primary_ip_setted || secondary_ip_setted == 0) {
@@ -35,5 +35,5 @@ int setCustomDNS(std::string primary_ip, std::string secondary_ip) {
 }
 
 int useDHCP() {
-    return !system("networksetup -setdnsservers " + getAdapter());
+    return !system(("networksetup -setdnsservers " + getAdapter()).c_str());
 }
